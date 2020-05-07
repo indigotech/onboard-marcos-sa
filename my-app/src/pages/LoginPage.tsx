@@ -30,7 +30,6 @@ class LoginPage extends React.Component<{},LoginPageState> {
         const name = e.target.name;
         const value = e.target.value;
         this.setState({[name]: value}as any);
-        console.log(value)
       }
       
       private handleButtonClick = () =>{
@@ -42,7 +41,7 @@ class LoginPage extends React.Component<{},LoginPageState> {
         this.validatePassword(password);
       }
       
-      validateEmail(value) {
+      private validateEmail(value) {
         let fieldValidationErrors = this.state.formErrors;
         let emailValid = this.state.emailValid;
         emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
@@ -52,7 +51,7 @@ class LoginPage extends React.Component<{},LoginPageState> {
           });
       }
 
-      validatePassword(value) {
+      private validatePassword(value) {
         let fieldValidationErrors = this.state.formErrors;
         let passwordValid = this.state.passwordValid;
         passwordValid = value.length >= 7 && value.match(/^(?=.*[a-z])(?=.*[0-9])/);
