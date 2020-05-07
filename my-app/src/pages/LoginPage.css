@@ -16,23 +16,23 @@ h1{
 .emailform{
     background-color: rgba(25, 39, 52);
     margin-bottom: 5%;
+    border-bottom: 1px solid white;
 }
 .pwform{
     background-color: rgba(25, 39, 52);
+    border-bottom: 1px solid white;
 }
 .email{
     border: 0px;
-    border-bottom: 1px solid white;
-    width: 100%;
+    width: 80%;
     background-color: transparent;
-    font-size: 150%;
+    color: white;
 }
 .password{
     border: 0px;
-    border-bottom: 1px solid white;
-    width: 100%;
+    width: 80%;
     background-color: transparent;
-    font-size: 150%;
+    color: white;
 }
 .forms{
     margin-bottom: 10%;
@@ -56,9 +56,13 @@ h1{
 .loginbt{
     background-color: rgb(0, 132, 255);
     border: 0;
-    width: 30%;
+    width: 80%;
+    margin-top: 5%;
     padding-top: 1%;
     padding-bottom: 1%;
     font-weight: bold;
     color: white;
+}
+.panel {
+    color: wheat;
 }
