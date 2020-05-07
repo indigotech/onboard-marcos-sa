@@ -67,9 +67,7 @@ class LoginPage extends React.Component<{},LoginPageState> {
     return(
     <div className="page"> 
         <div className="login">
-            <h1>
-            Entrar na Taqtile
-            </h1>
+            <h1>Entrar na Taqtile</h1>
             <form className="forms">
                 <div className="panel panel-default">
                     <FormErrors formErrors={this.state.formErrors} />
