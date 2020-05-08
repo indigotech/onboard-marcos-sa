@@ -19,12 +19,13 @@ interface LoginPageState {
 }
 
 const LOGIN_MUTATION = gql`
-mutation {
-  login(data:{email: "admin@taqtile.com.br",password:"1234qwer"}){
+mutation LoginMutation($email: String!, $password: String!){
+  login(data:{email: $email, password: $password}){
     token
   }
 }
 `
+
 const httpLink = createHttpLink({
   uri: 'https://tq-template-server-sample.herokuapp.com/graphql'
 })
@@ -63,9 +64,6 @@ class LoginPage extends React.Component<{},LoginPageState> {
         const name = e.target.name;
         const value = e.target.value;
         this.setState({[name]: value}as any);
-        if(this.state.emailValid && this.state.passwordValid){
-          this.login();
-        } 
       }
       
       private handleButtonClick = () =>{
@@ -95,6 +93,10 @@ class LoginPage extends React.Component<{},LoginPageState> {
         this.setState({formErrors: fieldValidationErrors,
             passwordValid: passwordValid
           });
+
+      if(this.state.emailValid && this.state.passwordValid){
+        this.login();
+      } 
       }
 
       confirmEmail = async data  => {
@@ -125,17 +127,6 @@ class LoginPage extends React.Component<{},LoginPageState> {
                     <input type="password" name="password" className="password" value={this.state.password} onChange={this.handleUserInput}></input>
                 </div>
             <button type="button" className="loginbt" onClick={this.handleButtonClick}>Entrar</button>
-{/*             <Mutation
-              mutation={LOGIN_MUTATION}
-              variables={{ email, password }}
-              onCompleted={data => this.confirmEmail(data)}
-            >
-              {mutation => (
-                <div className="pointer mr2 button" onClick={mutation}>
-                  {LOGIN_MUTATION}
-                </div>
-              )}
-            </Mutation> */}
             </form>
         </div>
     </div>   
