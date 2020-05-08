@@ -1,7 +1,13 @@
 import * as React from 'react';
 import './LoginPage.css';
-import { render } from '@testing-library/react';
 import { FormErrors } from "./FormsErrors";
+import { AUTH_TOKEN } from '../constants';
+import { Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
+
+import { ApolloClient } from 'apollo-client';
+import { createHttpLink } from 'apollo-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 interface LoginPageState {
     email: string;
@@ -9,8 +15,26 @@ interface LoginPageState {
     formErrors: {email:string, password: string};
     emailValid: boolean,
     passwordValid: boolean,
-    ClickValid: boolean,
+    ClickValid: boolean
 }
+
+const LOGIN_MUTATION = gql`
+mutation {
+  login(data:{email: "admin@taqtile.com.br",password:"1234qwer"}){
+    token
+  }
+}
+`
+const httpLink = createHttpLink({
+  uri: 'https://tq-template-server-sample.herokuapp.com/graphql'
+})
+
+const client = new ApolloClient({
+  link: httpLink,
+  cache: new InMemoryCache()
+})
+
+
 
 class LoginPage extends React.Component<{},LoginPageState> {
 
@@ -22,14 +46,26 @@ class LoginPage extends React.Component<{},LoginPageState> {
           formErrors: {email: '', password: ''},
           emailValid: false,
           passwordValid: false,
-          ClickValid: false,
+          ClickValid: false
         }
+      }
+
+      private login() {
+        client.mutate({
+          variables:{ email:this.state.email, password:this.state.password },
+          mutation: LOGIN_MUTATION          
+        })
+        .then(result => { console.log(result) })
+        .catch(error => { console.log(error) });
       }
 
       private  handleUserInput = (e) =>{
         const name = e.target.name;
         const value = e.target.value;
         this.setState({[name]: value}as any);
+        if(this.state.emailValid && this.state.passwordValid){
+          this.login();
+        } 
       }
       
       private handleButtonClick = () =>{
@@ -61,8 +97,17 @@ class LoginPage extends React.Component<{},LoginPageState> {
           });
       }
 
+      confirmEmail = async data  => {
+        const { token } = data.LOGIN_MUTATION
+        this.saveUserData(token)
+      }
+
+      saveUserData = token => {
+        localStorage.setItem(AUTH_TOKEN, token)
+      }
 
     render() {
+      const { email, password } = this.state
     return(
     <div className="page"> 
         <div className="login">
@@ -80,6 +125,17 @@ class LoginPage extends React.Component<{},LoginPageState> {
                     <input type="password" name="password" className="password" value={this.state.password} onChange={this.handleUserInput}></input>
                 </div>
             <button type="button" className="loginbt" onClick={this.handleButtonClick}>Entrar</button>
+{/*             <Mutation
+              mutation={LOGIN_MUTATION}
+              variables={{ email, password }}
+              onCompleted={data => this.confirmEmail(data)}
+            >
+              {mutation => (
+                <div className="pointer mr2 button" onClick={mutation}>
+                  {LOGIN_MUTATION}
+                </div>
+              )}
+            </Mutation> */}
             </form>
         </div>
     </div>   
