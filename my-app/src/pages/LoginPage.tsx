@@ -39,6 +39,7 @@ class LoginPage extends React.Component<{},LoginPageState> {
 
         this.validateEmail(email);
         this.validatePassword(password);
+        this.login()
       }
       
       private validateEmail(value) {
@@ -59,9 +60,8 @@ class LoginPage extends React.Component<{},LoginPageState> {
         this.setState({formErrors: fieldValidationErrors,
             passwordValid: passwordValid
           });
-        this.login()
-      
       }
+
       private login() {
         if(this.state.emailValid && this.state.passwordValid){
           this.authentication.login(this.state.email, this.state.password);
