@@ -1,41 +1,16 @@
 import * as React from 'react';
 import './LoginPage.css';
 import { FormErrors } from "./FormsErrors";
-import { AUTH_TOKEN } from '../constants';
-import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
-
-import { ApolloClient } from 'apollo-client';
-import { createHttpLink } from 'apollo-link-http';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import  Authentication from "../Authentication";
 
 interface LoginPageState {
     email: string;
     password: string;
     formErrors: {email:string, password: string};
-    emailValid: boolean,
-    passwordValid: boolean,
-    ClickValid: boolean
+    emailValid: boolean;
+    passwordValid: boolean;
+    
 }
-
-const LOGIN_MUTATION = gql`
-mutation LoginMutation($email: String!, $password: String!){
-  login(data:{email: $email, password: $password}){
-    token
-  }
-}
-`
-
-const httpLink = createHttpLink({
-  uri: 'https://tq-template-server-sample.herokuapp.com/graphql'
-})
-
-const client = new ApolloClient({
-  link: httpLink,
-  cache: new InMemoryCache()
-})
-
-
 
 class LoginPage extends React.Component<{},LoginPageState> {
 
@@ -46,19 +21,10 @@ class LoginPage extends React.Component<{},LoginPageState> {
           password: '',
           formErrors: {email: '', password: ''},
           emailValid: false,
-          passwordValid: false,
-          ClickValid: false
+          passwordValid: false
         }
       }
-
-      private login() {
-        client.mutate({
-          variables:{ email:this.state.email, password:this.state.password },
-          mutation: LOGIN_MUTATION          
-        })
-        .then(result => { console.log(result) })
-        .catch(error => { console.log(error) });
-      }
+      authentication = new Authentication();
 
       private  handleUserInput = (e) =>{
         const name = e.target.name;
@@ -93,20 +59,15 @@ class LoginPage extends React.Component<{},LoginPageState> {
         this.setState({formErrors: fieldValidationErrors,
             passwordValid: passwordValid
           });
-
-      if(this.state.emailValid && this.state.passwordValid){
-        this.login();
-      } 
+        this.login()
+      
+      }
+      private login() {
+        if(this.state.emailValid && this.state.passwordValid){
+          this.authentication.login(this.state.email, this.state.password);
+        } 
       }
 
-      confirmEmail = async data  => {
-        const { token } = data.LOGIN_MUTATION
-        this.saveUserData(token)
-      }
-
-      saveUserData = token => {
-        localStorage.setItem(AUTH_TOKEN, token)
-      }
 
     render() {
       const { email, password } = this.state
