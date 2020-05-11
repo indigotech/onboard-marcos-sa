@@ -43,8 +43,14 @@ export async function login(email, password):Promise<void> {
 
   const  token  = result.data?.login?.token;
   saveUserData(token);
+  changeURL()
 }   
     
 function saveUserData (token) {
   localStorage.setItem(AUTH_TOKEN, token)
 }
+
+function changeURL(){
+  history.push('/userlist');
+  window.location.reload(false); 
+  }
