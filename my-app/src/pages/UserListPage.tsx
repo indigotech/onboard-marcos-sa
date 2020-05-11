@@ -1,7 +1,7 @@
 import React from 'react';
-import './UserList.css';
+import './UserListPage.css';
 
-export class UserList extends React.Component {
+export class UserListPage extends React.Component {
     
     render() {
         return(

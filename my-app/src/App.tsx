@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './App.css';
 import { LoginPage } from './pages/LoginPage';
-import Blank from "./pages/Blank";
+import {UserListPage} from "./pages/UserListPage";
 import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 
 
@@ -12,8 +12,8 @@ function App() {
         <Route exact path="/">
           <LoginPage /> 
         </Route>
-        <Router exact path="/blank">
-          <Blank />
+        <Router exact path="/userList">
+          <UserListPage />
         </Router>
       </Switch>
     </Router>

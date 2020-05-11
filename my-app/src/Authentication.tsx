@@ -53,6 +53,6 @@ function saveUserData (token) {
 }
 
 function changeURL(){
-  history.push('/blank');
+  history.push('/userList');
   window.location.reload(false); 
 }
