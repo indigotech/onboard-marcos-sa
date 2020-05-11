@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './LoginPage.css';
 import { FormErrors } from "./FormsErrors";
-import  Authentication from "../Authentication";
+import  * as Authentication from "../Authentication";
 
 interface LoginPageState {
     email: string;
@@ -12,7 +12,7 @@ interface LoginPageState {
     
 }
 
-class LoginPage extends React.Component<{},LoginPageState> {
+export class LoginPage extends React.Component<{},LoginPageState> {
 
     constructor (props) {
         super(props);
@@ -24,7 +24,6 @@ class LoginPage extends React.Component<{},LoginPageState> {
           passwordValid: false
         }
       }
-      authentication = new Authentication();
 
       private  handleUserInput = (e) =>{
         const name = e.target.name;
@@ -39,7 +38,7 @@ class LoginPage extends React.Component<{},LoginPageState> {
 
         this.validateEmail(email);
         this.validatePassword(password);
-        this.login()
+        this.willLogin();
       }
       
       private validateEmail(value) {
@@ -62,39 +61,41 @@ class LoginPage extends React.Component<{},LoginPageState> {
           });
       }
 
-      private login() {
+      private async willLogin() {
         if(this.state.emailValid && this.state.passwordValid){
-          this.authentication.login(this.state.email, this.state.password);
+          try{
+            await Authentication.login(this.state.email, this.state.password);
+          }catch(error){
+            const message = error.graphQLErrors?.[0]?.message || 'Erro na conexão com servidores';
+            alert(message);
+            console.log(error);
+          }
         } 
       }
 
-
     render() {
       const { email, password } = this.state
-    return(
-    <div className="page"> 
-        <div className="login">
-            <h1>Entrar na Taqtile</h1>
-            <form className="forms">
-                <div className="panel panel-default">
-                    <FormErrors formErrors={this.state.formErrors} />
-                </div>
-                <div className="emailform">
-                    <div className="emailspan"><label htmlFor="email">Email</label></div>
-                    <input type="email" name="email" className="email" value={this.state.email} onChange={this.handleUserInput}></input>
-                </div>
-                <div className="pwform">
-                    <div className="pwspan"><label htmlFor="password">Senha</label></div>
-                    <input type="password" name="password" className="password" value={this.state.password} onChange={this.handleUserInput}></input>
-                </div>
-            <button type="button" className="loginbt" onClick={this.handleButtonClick}>Entrar</button>
-            </form>
-        </div>
-    </div>   
+      return(
+      <div className="page"> 
+          <div className="login">
+              <h1>Entrar na Taqtile</h1>
+              <form className="forms">
+                  <div className="panel panel-default">
+                      <FormErrors formErrors={this.state.formErrors} />
+                  </div>
+                  <div className="emailform">
+                      <div className="emailspan"><label htmlFor="email">Email</label></div>
+                      <input type="email" name="email" className="email" value={this.state.email} onChange={this.handleUserInput}></input>
+                  </div>
+                  <div className="pwform">
+                      <div className="pwspan"><label htmlFor="password">Senha</label></div>
+                      <input type="password" name="password" className="password" value={this.state.password} onChange={this.handleUserInput}></input>
+                  </div>
+                  <button type="button" className="loginbt" onClick={this.handleButtonClick}>Entrar</button>
+              </form>
+          </div>
+      </div>   
 
     );
     }
 }
-
-
-export default LoginPage;
