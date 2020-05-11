@@ -1,8 +1,11 @@
+import * as React from 'react';
 import { AUTH_TOKEN } from './constants';
 import gql from 'graphql-tag';
 import { ApolloClient } from 'apollo-client';
 import { createHttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
+import { createBrowserHistory } from 'history';
 
 const LOGIN_MUTATION = gql`
 mutation LoginMutation($email: String!, $password: String!){
@@ -20,6 +23,8 @@ const client = new ApolloClient({
   link: httpLink,
   cache: new InMemoryCache()
 })
+
+const history = createBrowserHistory();
 
 interface Result {
   login: {
@@ -40,9 +45,14 @@ export async function login(email, password):Promise<void> {
 
   const  token  = result.data?.login?.token;
   saveUserData(token);
+  changeURL()
 }   
     
 function saveUserData (token) {
   localStorage.setItem(AUTH_TOKEN, token)
-  console.log(localStorage)
+}
+
+function changeURL(){
+  history.push('/blank');
+  window.location.reload(false); 
 }
