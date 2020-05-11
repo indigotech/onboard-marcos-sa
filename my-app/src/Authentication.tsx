@@ -5,6 +5,7 @@ import { ApolloClient } from 'apollo-client';
 import { createHttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
+import { createBrowserHistory } from 'history';
 
 const LOGIN_MUTATION = gql`
 mutation LoginMutation($email: String!, $password: String!){
