@@ -24,6 +24,8 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 })
 
+const history = createBrowserHistory();
+
 interface Result {
   login: {
     token: String;
@@ -51,6 +53,6 @@ function saveUserData (token) {
 }
 
 function changeURL(){
-  history.push('/userlist');
+  history.push('/blank');
   window.location.reload(false); 
-  }
+}
