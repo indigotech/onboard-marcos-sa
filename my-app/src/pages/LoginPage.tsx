@@ -8,8 +8,7 @@ interface LoginPageState {
     password: string;
     formErrors: {email:string, password: string};
     emailValid: boolean;
-    passwordValid: boolean;
-    
+    passwordValid: boolean;    
 }
 
 export class LoginPage extends React.Component<{},LoginPageState> {
@@ -73,28 +72,30 @@ export class LoginPage extends React.Component<{},LoginPageState> {
         } 
       }
 
+     
+
     render() {
       const { email, password } = this.state
-      return(
+    return(
       <div className="page"> 
-          <div className="login">
-              <h1>Entrar na Taqtile</h1>
-              <form className="forms">
-                  <div className="panel panel-default">
-                      <FormErrors formErrors={this.state.formErrors} />
-                  </div>
-                  <div className="emailform">
-                      <div className="emailspan"><label htmlFor="email">Email</label></div>
-                      <input type="email" name="email" className="email" value={this.state.email} onChange={this.handleUserInput}></input>
-                  </div>
-                  <div className="pwform">
-                      <div className="pwspan"><label htmlFor="password">Senha</label></div>
-                      <input type="password" name="password" className="password" value={this.state.password} onChange={this.handleUserInput}></input>
-                  </div>
-                  <button type="button" className="loginbt" onClick={this.handleButtonClick}>Entrar</button>
-              </form>
-          </div>
-      </div>   
+        <div className="login">
+        <h1>Entrar na Taqtile</h1>
+            <form className="forms">
+                <div className="panel panel-default">
+                    <FormErrors formErrors={this.state.formErrors} />
+                </div>
+                <div className="emailform">
+                    <div className="emailspan"><label htmlFor="email">Email</label></div>
+                    <input type="email" name="email" className="email" value={this.state.email} onChange={this.handleUserInput}></input>
+                </div>
+                <div className="pwform">
+                    <div className="pwspan"><label htmlFor="password">Senha</label></div>
+                    <input type="password" name="password" className="password" value={this.state.password} onChange={this.handleUserInput}></input>
+                </div>
+            <button type="button" className="loginbt" onClick={this.handleButtonClick}>Entrar</button>
+            </form>
+        </div>
+    </div>   
 
     );
     }
