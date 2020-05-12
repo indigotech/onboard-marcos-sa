@@ -1,18 +1,57 @@
 import React from 'react';
 import './UserListPage.css';
+import * as UserListIntegration from '../UserListIntegration';
+import { UserModel } from '../Users.model';
 
-export class UserListPage extends React.Component {
+
+
+export class UserListPage extends React.Component<{},UserModel>{
     
+    
+    offset:Number;
+    limit:Number;
+
+    constructor(props,offset,limit){
+        super(props);
+        this.offset = offset = 0
+        this.limit = limit = 10
+        this.getUserList = this.getUserList.bind(this);
+        this.state = {
+            users: {nodes:[{email:'',name:''}]}
+        }
+    }
+     async getUserList ()  {
+        try{
+            const userList = await UserListIntegration.queryUserList(this.offset,this.limit);
+            this.setState({users:userList.data.users})
+            console.log(this.state.users)
+        }catch(error){
+            const message = error.graphQLErrors?.[0]?.message || 'Falha na conexão';
+            alert(message);
+        }
+    }
+
+    componentDidMount() {
+        this.getUserList()
+         };
+
+    handleUserCard({ name, email }) {
+        return (
+          <div className="card">
+            <div className="container"> 
+              <p >Nome: {name} </p>
+              <p >E-mail: {email} </p>
+            </div>      
+          </div>
+        )
+      }
+
     render() {
-        return(
-            <div className="wrap">
-                <div className="card">
-                <div className="container">
-                    <h4><b>John Doe</b></h4> 
-                    <p>john.doe@gmail.com</p> 
-                </div>
-                </div>
-            </div>
+        const { nodes } = this.state.users
+        return( 
+            <div >
+                {nodes.map(this.handleUserCard)}            
+        </div>
         )
     }
-  }
+}

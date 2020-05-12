@@ -1,21 +1,29 @@
-import * as React from 'react';
 import { AUTH_TOKEN } from './constants';
 import gql from 'graphql-tag';
 import { ApolloClient } from 'apollo-client';
 import { createHttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createBrowserHistory } from 'history';
+import { UserModel } from './Users.model';
 
 const LOGIN_QUERY = gql`
-mutation LoginMutation($email: String!, $password: String!){
-  login(data:{email: $email, password: $password}){
-    token
+query UserList($offset: Int!,$limit: Int!){
+    users(pageInfo:{offset:$offset,limit:$limit}){
+      nodes{
+        name 
+        email
+      }
+    }
   }
-}
 `
 
+const token = localStorage.getItem(AUTH_TOKEN)
+
 const httpLink = createHttpLink({
-  uri: 'https://tq-template-server-sample.herokuapp.com/graphql'
+  uri: 'https://tq-template-server-sample.herokuapp.com/graphql',
+  headers: {
+    Authorization: token
+  }
 })
 
 const client = new ApolloClient({
@@ -25,19 +33,11 @@ const client = new ApolloClient({
 
 const history = createBrowserHistory();
 
-interface Result {
-    users: {
-      nodes: {
-          name:String;
-          email:String;
-      }
-    }
-  }
 
 export async function queryUserList(offset, limit){
-    const result = await client.query<Result>({
+    const result = await client.query<UserModel>({
         variables:{ offset:offset, limit:limit },
         query: LOGIN_QUERY          
       });
-      
+      return(result)
 }
