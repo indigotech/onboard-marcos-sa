@@ -33,7 +33,6 @@ const client = new ApolloClient({
 
 const history = createBrowserHistory();
 
-
 export async function queryUserList(offset, limit){
     const result = await client.query<UserModel>({
         variables:{ offset:offset, limit:limit },

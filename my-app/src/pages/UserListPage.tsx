@@ -24,7 +24,6 @@ export class UserListPage extends React.Component<{},UserModel>{
         try{
             const userList = await UserListIntegration.queryUserList(this.offset,this.limit);
             this.setState({users:userList.data.users})
-            console.log(this.state.users)
         }catch(error){
             const message = error.graphQLErrors?.[0]?.message || 'Falha na conexão';
             alert(message);
