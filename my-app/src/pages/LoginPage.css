@@ -1,68 +1,67 @@
-body{
+body {
   height: 100%;
-  
+
   background-color: rgb(21, 32, 43);
 }
-h1{
-    color:white;
+h1 {
+  color: white;
 }
-.login{
-    text-align: center;
-    width: 60%;
-    margin: auto;
-    margin-top: 3%;
-    background-color: rgb(21, 32, 43);
+.login {
+  text-align: center;
+  width: 60%;
+  margin: auto;
+  margin-top: 3%;
+  background-color: rgb(21, 32, 43);
 }
-.emailform{
-    background-color: rgba(25, 39, 52);
-    margin-bottom: 5%;
-    border-bottom: 1px solid white;
+.emailform {
+  background-color: rgba(25, 39, 52);
+  margin-bottom: 5%;
+  border-bottom: 1px solid white;
 }
-.pwform{
-    background-color: rgba(25, 39, 52);
-    border-bottom: 1px solid white;
+.pwform {
+  background-color: rgba(25, 39, 52);
+  border-bottom: 1px solid white;
 }
-.email{
-    border: 0px;
-    width: 80%;
-    background-color: transparent;
-    color: white;
+.email {
+  border: 0px;
+  width: 80%;
+  background-color: transparent;
+  color: white;
 }
-.password{
-    border: 0px;
-    width: 80%;
-    background-color: transparent;
-    color: white;
+.password {
+  border: 0px;
+  width: 80%;
+  background-color: transparent;
+  color: white;
 }
-.forms{
-    margin-bottom: 10%;
-    width: 50%;
-    margin:auto;
-    margin-bottom: 4%;
-
+.forms {
+  margin-bottom: 10%;
+  width: 50%;
+  margin: auto;
+  margin-bottom: 4%;
 }
-.emailspan{
-    text-align: left;
-    color: rgb(113, 130, 134);
-    padding-left: 10px;
-    padding-top: 5px;
+.emailspan {
+  text-align: left;
+  color: rgb(113, 130, 134);
+  padding-left: 10px;
+  padding-top: 5px;
 }
-.pwspan{
-    text-align: left;
-    color: rgb(113, 130, 134);
-    padding-left: 10px;
-    padding-top: 5px;
+.pwspan {
+  text-align: left;
+  color: rgb(113, 130, 134);
+  padding-left: 10px;
+  padding-top: 5px;
 }
-.loginbt{
-    background-color: rgb(0, 132, 255);
-    border: 0;
-    width: 80%;
-    margin-top: 5%;
-    padding-top: 1%;
-    padding-bottom: 1%;
-    font-weight: bold;
-    color: white;
+.loginbt {
+  background-color: rgb(0, 132, 255);
+  border: 0;
+  width: 80%;
+  margin-top: 5%;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  font-weight: bold;
+  color: white;
 }
 .panel {
-    color: wheat;
+  color: wheat;
 }

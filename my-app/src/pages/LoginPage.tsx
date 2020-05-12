@@ -67,7 +67,6 @@ export class LoginPage extends React.Component<{},LoginPageState> {
           }catch(error){
             const message = error.graphQLErrors?.[0]?.message || 'Erro na conexão com servidores';
             alert(message);
-            console.log(error);
           }
         } 
       }
