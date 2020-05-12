@@ -17,7 +17,7 @@ export class UserListPage extends React.Component<{},UserModel>{
         this.limit = limit = 10
         this.getUserList = this.getUserList.bind(this);
         this.state = {
-            users: {nodes:[{email:'',name:''}]}
+            users: {nodes:[{id:'',email:'',name:''}]}
         }
     }
      async getUserList ()  {
@@ -34,12 +34,12 @@ export class UserListPage extends React.Component<{},UserModel>{
         this.getUserList()
          };
 
-    handleUserCard({ name, email }) {
+    handleUserCard({ id, name, email }) {
         return (
-          <div className="card">
+          <div className="card" key={id}>
             <div className="container"> 
               <p >Nome: {name} </p>
-              <p >E-mail: {email} </p>
+              <p> E-mail: {email} </p>
             </div>      
           </div>
         )
@@ -48,9 +48,9 @@ export class UserListPage extends React.Component<{},UserModel>{
     render() {
         const { nodes } = this.state.users
         return( 
-            <div >
+            <div>
                 {nodes.map(this.handleUserCard)}            
-        </div>
+        </div>    
         )
     }
 }

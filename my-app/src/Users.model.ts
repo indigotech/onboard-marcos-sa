@@ -1,8 +1,9 @@
 export interface UserModel {
-    users: {
-      nodes: {
-          name:string;
-          email:string;
-      }[]
-    }
-  }
+  users: {
+    nodes: {
+      id:String;
+      name: string;
+      email: string;
+    }[];
+  };
+}

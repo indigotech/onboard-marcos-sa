@@ -1,16 +1,15 @@
-import * as React from 'react';
-import './App.css';
-import { LoginPage } from './pages/LoginPage';
-import {UserListPage} from "./pages/UserListPage";
-import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
-
+import * as React from "react";
+import "./App.css";
+import { LoginPage } from "./pages/LoginPage";
+import { UserListPage } from "./pages/UserListPage";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 function App() {
   return (
     <Router>
       <Switch>
         <Route exact path="/">
-          <LoginPage /> 
+          <LoginPage />
         </Route>
         <Router exact path="/userList">
           <UserListPage />
@@ -19,6 +18,5 @@ function App() {
     </Router>
   );
 }
-
 
 export default App;

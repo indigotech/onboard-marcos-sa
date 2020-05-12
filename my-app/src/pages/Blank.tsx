@@ -1,14 +1,13 @@
-import React from 'react';
+import React from "react";
 
 class Blank extends React.Component {
-    render() {
-        return(
-            <div>
-                <h1>Entrou</h1>
-            </div>
-        )
-    }
+  render() {
+    return (
+      <div>
+        <h1>Entrou</h1>
+      </div>
+    );
   }
-  
-  
-  export default Blank;
+}
+
+export default Blank;
