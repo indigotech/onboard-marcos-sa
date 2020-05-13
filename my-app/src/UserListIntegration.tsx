@@ -3,7 +3,6 @@ import gql from "graphql-tag";
 import { ApolloClient } from "apollo-client";
 import { createHttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
-import { createBrowserHistory } from "history";
 import { UserModel } from "./Users.model";
 
 const USERS_QUERY = gql`
@@ -13,6 +12,13 @@ const USERS_QUERY = gql`
         id
         name
         email
+      }
+      count
+      pageInfo {
+        offset
+        limit
+        hasNextPage
+        hasPreviousPage
       }
     }
   }
@@ -31,8 +37,6 @@ const client = new ApolloClient({
   link: httpLink,
   cache: new InMemoryCache(),
 });
-
-const history = createBrowserHistory();
 
 export async function queryUserList(offset, limit) {
   const result = await client.query<UserModel>({
