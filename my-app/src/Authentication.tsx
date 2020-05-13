@@ -52,5 +52,5 @@ function saveUserData(token) {
 
 function changeURL() {
   history.push("/userList");
-  window.location.reload(false); 
+  window.location.reload(false);
 }

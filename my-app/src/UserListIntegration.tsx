@@ -14,12 +14,12 @@ const USERS_QUERY = gql`
         email
       }
       count
-    pageInfo{
-      offset
-      limit
-      hasNextPage
-      hasPreviousPage
-    }
+      pageInfo {
+        offset
+        limit
+        hasNextPage
+        hasPreviousPage
+      }
     }
   }
 `;

@@ -1,16 +1,16 @@
 export interface UserModel {
   users: {
     nodes: {
-      id:String;
+      id: String;
       name: string;
       email: string;
     }[];
     count: number;
-    pageInfo:{
+    pageInfo: {
       offset: number;
       limit: number;
       hasNextPage: boolean;
-      hasPreviousPage:boolean;
-    }
-  }
-};
+      hasPreviousPage: boolean;
+    };
+  };
+}
