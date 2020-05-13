@@ -1,7 +1,7 @@
 import React from "react";
 import "./UserListPage.css";
 import * as UserListIntegration from "../UserListIntegration";
-import InfiniteScroll from "react-infinite-scroll-component";
+import InfiniteScroll from "react-infinite-scroller";
 
 interface UserModelState {
   users: {
@@ -12,7 +12,8 @@ interface UserModelState {
   count: number;
   offset: number;
   limit: number;
-  hasNextPage: boolean
+  hasNextPage: boolean;
+  isLoading: boolean;
 }
 
 export class UserListPage extends React.Component<{}, UserModelState> {
@@ -25,7 +26,8 @@ export class UserListPage extends React.Component<{}, UserModelState> {
       count: 0,
       offset: 0,
       limit: 10,
-      hasNextPage: true
+      hasNextPage: true,
+      isLoading: false,
     };
   }
 
@@ -37,7 +39,7 @@ export class UserListPage extends React.Component<{}, UserModelState> {
       );
       this.setState({
         users: userList.data.users.nodes,
-        count: userList.data.users.count
+        count: userList.data.users.count,
       });
     } catch (error) {
       const message = error.graphQLErrors?.[0]?.message || "Falha na conexão";
@@ -61,23 +63,16 @@ export class UserListPage extends React.Component<{}, UserModelState> {
   }
   async fetchMoreData() {
     try {
-      console.log("OPA");
-      console.log(this.state.limit);
-      console.log(this.state.hasNextPage);
       this.setState({ limit: this.state.limit + 10 });
       const moreUserList = await UserListIntegration.queryUserList(
         this.state.offset,
         this.state.limit
       );
-      console.log(moreUserList);
-      setTimeout(() =>{
       this.setState({
         users: moreUserList.data.users.nodes,
-        hasNextPage: moreUserList.data.users.pageInfo.hasNextPage
+        hasNextPage: moreUserList.data.users.pageInfo.hasNextPage,
+        isLoading: moreUserList.loading,
       });
-      console.log(this.state.hasNextPage);
-      console.log(this.state.limit);
-    },1500);
     } catch (error) {
       console.log("Não foi possivel pegar mais dados...");
     }
@@ -89,13 +84,19 @@ export class UserListPage extends React.Component<{}, UserModelState> {
       <div>
         <InfiniteScroll
           dataLength={this.state.count}
-          next={this.fetchMoreData}
-          hasMore={this.state.hasNextPage}
-          loader={<h4 style={{ textAlign: "center",color: "white" }}>Carregando...</h4>}
-          endMessage={
-            <p style={{textAlign: 'center'}}>
-              <b>Uhu! Você viu tudo!</b>
-            </p>
+          loadMore={this.fetchMoreData}
+          initialLoad={false}
+          hasMore={!this.state.isLoading && this.state.hasNextPage}
+          loader={
+            <h4
+              style={{
+                textAlign: "center",
+                color: "white",
+                paddingBottom: "10%",
+              }}
+            >
+              Carregando...
+            </h4>
           }
         >
           {users.map(this.handleUserCard)}
