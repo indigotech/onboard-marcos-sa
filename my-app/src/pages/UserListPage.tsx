@@ -16,6 +16,19 @@ interface UserModelState {
   isLoading: boolean;
 }
 
+function loaderComponent () {
+  return (
+    <h4
+      style={{
+      textAlign: "center",
+      color: "white"
+      }}
+    >
+      Carregando...
+    </h4>
+  );
+}
+
 export class UserListPage extends React.Component<{}, UserModelState> {
   constructor(props) {
     super(props);
@@ -31,7 +44,7 @@ export class UserListPage extends React.Component<{}, UserModelState> {
     };
   }
 
-  async getUserList() {
+  private async getUserList() {
     try {
       const userList = await UserListIntegration.queryUserList(
         this.state.offset,
@@ -51,7 +64,7 @@ export class UserListPage extends React.Component<{}, UserModelState> {
     this.getUserList();
   }
 
-  handleUserCard({ id, name, email }) {
+  private handleUserCard({ id, name, email }) {
     return (
       <div className="card" key={id}>
         <div className="container">
@@ -61,7 +74,7 @@ export class UserListPage extends React.Component<{}, UserModelState> {
       </div>
     );
   }
-  async fetchMoreData() {
+  private async fetchMoreData() {
     try {
       this.setState({ limit: this.state.limit + 10 });
       const moreUserList = await UserListIntegration.queryUserList(
@@ -87,17 +100,7 @@ export class UserListPage extends React.Component<{}, UserModelState> {
           loadMore={this.fetchMoreData}
           initialLoad={false}
           hasMore={!this.state.isLoading && this.state.hasNextPage}
-          loader={
-            <h4
-              style={{
-                textAlign: "center",
-                color: "white",
-                paddingBottom: "10%",
-              }}
-            >
-              Carregando...
-            </h4>
-          }
+          loader={loaderComponent()}
         >
           {users.map(this.handleUserCard)}
         </InfiniteScroll>
