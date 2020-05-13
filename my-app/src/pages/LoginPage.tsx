@@ -2,6 +2,7 @@ import * as React from "react";
 import "./LoginPage.css";
 import { FormErrors } from "./FormsErrors";
 import * as Authentication from "../Authentication";
+import * as Validation from "../Validation";
 
 interface LoginPageState {
   email: string;
@@ -33,34 +34,18 @@ export class LoginPage extends React.Component<{}, LoginPageState> {
     const email = this.state.email;
     const password = this.state.password;
 
-    this.validateEmail(email);
-    this.validatePassword(password);
+    const isEmailValid = Validation.validateEmail(email, this.state.formErrors, this.state.emailValid);
+    const isPasswordValid = Validation.validatePassword(password, this.state.formErrors, this.state.passwordValid);
+    this.setState({
+      formErrors: isEmailValid.formErrors,
+      emailValid: isEmailValid.emailValid,
+      passwordValid: isPasswordValid.passwordValid
+    });
+    this.setState({
+      formErrors: isPasswordValid.formErrors
+    });
     this.willLogin();
   };
-
-  private validateEmail(value) {
-    let fieldValidationErrors = this.state.formErrors;
-    let emailValid = this.state.emailValid;
-    emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-    fieldValidationErrors.email = emailValid ? "" : "Email não é válido";
-    this.setState({
-      formErrors: fieldValidationErrors,
-      emailValid: emailValid,
-    });
-  }
-
-  private validatePassword(value) {
-    let fieldValidationErrors = this.state.formErrors;
-    let passwordValid = this.state.passwordValid;
-    passwordValid = value.length >= 7 && value.match(/^(?=.*[a-z])(?=.*[0-9])/);
-    fieldValidationErrors.password = passwordValid
-      ? ""
-      : "Senha necessita de, pelo menos, um número e uma letra";
-    this.setState({
-      formErrors: fieldValidationErrors,
-      passwordValid: passwordValid,
-    });
-  }
 
   private async willLogin() {
     if (this.state.emailValid && this.state.passwordValid) {
