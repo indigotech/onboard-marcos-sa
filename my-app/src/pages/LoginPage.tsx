@@ -74,7 +74,6 @@ export class LoginPage extends React.Component<{},LoginPageState> {
      
 
     render() {
-      const { email, password } = this.state
     return(
       <div className="page"> 
         <div className="login">

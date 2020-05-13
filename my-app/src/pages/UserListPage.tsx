@@ -1,29 +1,47 @@
 import React from 'react';
 import './UserListPage.css';
 import * as UserListIntegration from '../UserListIntegration';
-import { UserModel } from '../Users.model';
+import InfiniteScroll from "react-infinite-scroll-component";
 
+interface UserModelState {
+    users: {
+      id:String;
+      name: string;
+      email: string;
+    }[];
+    count: number;
+    pageInfo:{
+        offset: number;
+        limit: number;
+        hasNextPage: boolean;
+        hasPreviousPage:boolean;
+    }
+  };
 
+export class UserListPage extends React.Component<{},UserModelState>{
 
-export class UserListPage extends React.Component<{},UserModel>{
     
-    
-    offset:Number;
-    limit:Number;
 
-    constructor(props,offset,limit){
+    constructor(props){
         super(props);
-        this.offset = offset = 0
-        this.limit = limit = 10
         this.getUserList = this.getUserList.bind(this);
+        this.fetchMoreData = this.fetchMoreData.bind(this);
         this.state = {
-            users: {nodes:[{id:'',email:'',name:''}]}
+            users:[{id:'',email:'',name:''}],
+            count: 0,
+            pageInfo:{
+              offset: 0,
+              limit: 10,
+              hasNextPage: false,
+              hasPreviousPage:false
+            }
         }
     }
+
      async getUserList ()  {
         try{
-            const userList = await UserListIntegration.queryUserList(this.offset,this.limit);
-            this.setState({users:userList.data.users})
+            const userList = await UserListIntegration.queryUserList(this.state.pageInfo.offset,this.state.pageInfo.limit);
+            this.setState({users:userList.data.users.nodes})
         }catch(error){
             const message = error.graphQLErrors?.[0]?.message || 'Falha na conexão';
             alert(message);
@@ -32,6 +50,7 @@ export class UserListPage extends React.Component<{},UserModel>{
 
     componentDidMount() {
         this.getUserList()
+        this.state.users.concat(this.state.users)
          };
 
     handleUserCard({ id, name, email }) {
@@ -44,13 +63,37 @@ export class UserListPage extends React.Component<{},UserModel>{
           </div>
         )
       }
+    async fetchMoreData  () {
+      try{
+        const moreUserList = await UserListIntegration.queryUserList(this.state.pageInfo.offset,this.state.pageInfo.limit);
+        setTimeout(() => {
+            this.setState(
+                {
+                users: moreUserList.data.users.nodes.concat()
+              });
+           console.log(this.state.count)
+           console.log(this.state.pageInfo.hasNextPage)
+           console.log(this.state.pageInfo.limit)
+        }, 1500);
+    }catch(error){
+        console.log("Não foi possivel pegar mais dados...")
+    }
+    }
+
 
     render() {
-        const { nodes } = this.state.users
+        const { users } = this.state
         return( 
-            <div>
-                {nodes.map(this.handleUserCard)}            
-        </div>    
+            <div>    
+                <InfiniteScroll
+                dataLength={this.state.count}
+                next={this.fetchMoreData}
+                hasMore={this.state.pageInfo.hasNextPage}
+                loader={<h4 style={{textAlign: 'center'}}>Loading...</h4>}
+                >
+                    {users.map(this.handleUserCard)}
+                </InfiniteScroll>
+            </div>  
         )
     }
 }

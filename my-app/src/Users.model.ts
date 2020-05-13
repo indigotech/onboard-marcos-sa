@@ -5,5 +5,12 @@ export interface UserModel {
       name: string;
       email: string;
     }[];
-  };
-}
+    count: number;
+    pageInfo:{
+      offset: number;
+      limit: number;
+      hasNextPage: boolean;
+      hasPreviousPage:boolean;
+    }
+  }
+};
