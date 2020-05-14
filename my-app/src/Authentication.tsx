@@ -22,7 +22,6 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-
 interface Result {
   login: {
     token: String;
@@ -48,4 +47,3 @@ export async function login(email, password): Promise<void> {
 function saveUserData(token) {
   localStorage.setItem(AUTH_TOKEN, token);
 }
-

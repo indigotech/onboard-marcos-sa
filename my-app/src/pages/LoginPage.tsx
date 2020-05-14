@@ -9,7 +9,7 @@ interface LoginPageState {
   password: string;
   formErrors: { email: string; password: string };
   emailValid: boolean;
-  passwordValid: boolean
+  passwordValid: boolean;
 }
 
 export class LoginPage extends React.Component<{}, LoginPageState> {
@@ -20,7 +20,7 @@ export class LoginPage extends React.Component<{}, LoginPageState> {
       password: "",
       formErrors: { email: "", password: "" },
       emailValid: false,
-      passwordValid: false
+      passwordValid: false,
     };
   }
 
@@ -34,15 +34,23 @@ export class LoginPage extends React.Component<{}, LoginPageState> {
     const email = this.state.email;
     const password = this.state.password;
 
-    const isEmailValid = Validation.validateEmail(email, this.state.formErrors, this.state.emailValid);
-    const isPasswordValid = Validation.validatePassword(password, this.state.formErrors, this.state.passwordValid);
+    const isEmailValid = Validation.validateEmail(
+      email,
+      this.state.formErrors,
+      this.state.emailValid
+    );
+    const isPasswordValid = Validation.validatePassword(
+      password,
+      this.state.formErrors,
+      this.state.passwordValid
+    );
     this.setState({
       formErrors: isEmailValid.formErrors,
       emailValid: isEmailValid.emailValid,
-      passwordValid: isPasswordValid.passwordValid
+      passwordValid: isPasswordValid.passwordValid,
     });
     this.setState({
-      formErrors: isPasswordValid.formErrors
+      formErrors: isPasswordValid.formErrors,
     });
     this.willLogin();
   };

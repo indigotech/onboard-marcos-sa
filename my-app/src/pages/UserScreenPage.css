@@ -1,50 +1,49 @@
-
-.formsBig{
+.formsBig {
   text-align: center;
   margin: auto;
   width: 30%;
 }
 
-.Input{
-    border: 0px;
-    width: 80%;
-    background-color: transparent;
-    color: white;
+.Input {
+  border: 0px;
+  width: 80%;
+  background-color: transparent;
+  color: white;
 }
 
-.roleInput{
-    border: 0px;
-    width: 10%;
-    background-color: transparent;
-    color: white;
-    margin-left: 15%;
+.roleInput {
+  border: 0px;
+  width: 10%;
+  background-color: transparent;
+  color: white;
+  margin-left: 15%;
 }
 
-.span{
-    text-align: left;
+.span {
+  text-align: left;
   color: rgb(113, 130, 134);
   padding-left: 10px;
   padding-top: 5px;
 }
 
-.formsChild{
-    background-color: rgba(25, 39, 52);
+.formsChild {
+  background-color: rgba(25, 39, 52);
   margin-bottom: 5%;
   border-bottom: 1px solid white;
 }
 
-.formsChildRole{
-    background-color: rgba(25, 39, 52);
+.formsChildRole {
+  background-color: rgba(25, 39, 52);
   margin-bottom: 5%;
   border-bottom: 1px solid white;
   text-align: left;
 }
 
-.h1NewUser{
-    text-align: center;
+.h1NewUser {
+  text-align: center;
 }
 
-.labelRole{
-    color: white;
-    display: inline-block;
+.labelRole {
+  color: white;
+  display: inline-block;
 }

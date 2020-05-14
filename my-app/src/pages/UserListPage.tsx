@@ -7,7 +7,6 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { changeURL } from "../ChangeUrl";
 
-
 interface UserModelState {
   users: {
     id: String;
@@ -45,7 +44,7 @@ export class UserListPage extends React.Component<{}, UserModelState> {
       offset: 0,
       limit: 10,
       hasNextPage: true,
-      isLoading: false
+      isLoading: false,
     };
   }
 
@@ -111,8 +110,8 @@ export class UserListPage extends React.Component<{}, UserModelState> {
     }
   }
 
-  private handleButtonClick(){
-    changeURL("userScreen")
+  private handleButtonClick() {
+    changeURL("userScreen");
   }
 
   render() {
@@ -129,7 +128,13 @@ export class UserListPage extends React.Component<{}, UserModelState> {
           {users.map(this.handleUserCard)}
         </InfiniteScroll>
         <div className="fab-wrap">
-          <Fab onClick={this.handleButtonClick} size="medium" color="primary" aria-label="add" className="fab">
+          <Fab
+            onClick={this.handleButtonClick}
+            size="medium"
+            color="primary"
+            aria-label="add"
+            className="fab"
+          >
             <AddIcon />
           </Fab>
         </div>
