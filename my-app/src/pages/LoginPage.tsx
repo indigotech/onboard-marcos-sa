@@ -9,7 +9,7 @@ interface LoginPageState {
   password: string;
   formErrors: { email: string; password: string };
   emailValid: boolean;
-  passwordValid: boolean;
+  passwordValid: boolean
 }
 
 export class LoginPage extends React.Component<{}, LoginPageState> {
@@ -20,7 +20,7 @@ export class LoginPage extends React.Component<{}, LoginPageState> {
       password: "",
       formErrors: { email: "", password: "" },
       emailValid: false,
-      passwordValid: false,
+      passwordValid: false
     };
   }
 

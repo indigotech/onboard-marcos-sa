@@ -45,7 +45,7 @@ export class UserListPage extends React.Component<{}, UserModelState> {
       offset: 0,
       limit: 10,
       hasNextPage: true,
-      isLoading: false,
+      isLoading: false
     };
   }
 
