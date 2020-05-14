@@ -21,9 +21,7 @@ export function validatePassword(value, fieldValidationErrors, passwordValid) {
 }
 
 export function validatePhone(value, fieldValidationErrors, phoneValid) {
-  phoneValid = value.match(
-    /^\d{11}$/
-  );
+  phoneValid = value.match(/^\d{11}$/);
   fieldValidationErrors.phoneValid = phoneValid
     ? ""
     : "Colocar apenas números no telefone";
@@ -34,23 +32,24 @@ export function validatePhone(value, fieldValidationErrors, phoneValid) {
   return phoneValidate;
 }
 
-export function validateBirthDate(){
-//   value,
-//   fieldValidationErrors,
-//   birthDateValid
-// ) {
-//   var now = new Date();
-//   if (value.getTime() < now.getTime()) {
-//     birthDateValid = true;
-//   } else {
-//     birthDateValid = false;
-//   }
-//   fieldValidationErrors.birthDate = birthDateValid ? "" : "Data incorreta!";
-//   var birthdateValidate = {
-//     formErrors: fieldValidationErrors,
-//     birthDateValid: birthDateValid,
-//   };
-  return true;
+export function validateBirthDate(
+  value,
+  fieldValidationErrors,
+  birthDateValid
+) {
+  const now = new Date();
+  const birth = new Date(value);
+  if (birth.getTime() < now.getTime()) {
+    birthDateValid = true;
+  } else {
+    birthDateValid = false;
+  }
+  fieldValidationErrors.birthDate = birthDateValid ? "" : "Data incorreta!";
+  var birthdateValidate = {
+    formErrors: fieldValidationErrors,
+    birthDateValid: birthDateValid,
+  };
+  return birthdateValidate;
 }
 
 export function validateCheckbox(
@@ -59,7 +58,7 @@ export function validateCheckbox(
   fieldValidationErrors,
   checkboxValid
 ) {
-  if ((roleUser && roleAdmin) || (roleUser == false && roleAdmin == false)) {
+  if ((roleUser && roleAdmin) || (roleUser === false && roleAdmin === false)) {
     checkboxValid = false;
   } else {
     checkboxValid = true;

@@ -8,17 +8,17 @@ interface UserScreenState {
   name: string;
   phone: string;
   birthDate: Date;
+  birthDateString: string;
   email: string;
   password: string;
   roleAdmin: boolean;
   roleUser: boolean;
-  role:string;
   formErrors: {
     email: string;
     phone: string;
     password: string;
-    birthDate: Date;
-    checkbox: boolean;
+    birthDate: string;
+    checkbox: string;
   };
   emailValid: boolean;
   passwordValid: boolean;
@@ -32,26 +32,27 @@ export class UserScreenPage extends React.Component<{}, UserScreenState> {
     super(props);
     this.toggleCheckboxAdmin = this.toggleCheckboxAdmin.bind(this);
     this.toggleCheckboxUser = this.toggleCheckboxUser.bind(this);
+    this.handlebirthDate = this.handlebirthDate.bind(this);
     this.state = {
       name: "",
       phone: "",
       birthDate: new Date(),
+      birthDateString: "",
       email: "",
       password: "",
       roleAdmin: false,
       roleUser: false,
-      role: "",
       formErrors: {
         email: "",
         phone: "",
         password: "",
-        birthDate: new Date(),
-        checkbox: false,
+        birthDate: "",
+        checkbox: "",
       },
       emailValid: false,
       passwordValid: false,
       phoneValid: false,
-      birthDateValid: true,
+      birthDateValid: false,
       checkboxValid: false,
     };
   }
@@ -66,7 +67,7 @@ export class UserScreenPage extends React.Component<{}, UserScreenState> {
     const email = this.state.email;
     const phone = this.state.phone;
     const password = this.state.password;
-    const birthDate = this.state.birthDate;
+    const birthDate = this.state.birthDateString;
     const roleAdmin = this.state.roleAdmin;
     const roleUser = this.state.roleUser;
 
@@ -86,9 +87,9 @@ export class UserScreenPage extends React.Component<{}, UserScreenState> {
       this.state.passwordValid
     );
     const isBirthDateValid = Validation.validateBirthDate(
-      // birthDate,
-      // this.state.formErrors,
-      // this.state.birthDateValid
+      birthDate,
+      this.state.formErrors,
+      this.state.birthDateValid
     );
     const isCheckboxValid = Validation.validateCheckbox(
       roleUser,
@@ -101,15 +102,15 @@ export class UserScreenPage extends React.Component<{}, UserScreenState> {
       emailValid: isEmailValid.emailValid,
       passwordValid: isPasswordValid.passwordValid,
       phoneValid: isPhoneValid.phoneValid,
-      // birthDateValid: isBirthDateValid.birthDateValid,
+      birthDateValid: isBirthDateValid.birthDateValid,
       checkboxValid: isCheckboxValid.checkboxValid,
     });
     this.setState({
       formErrors: isPhoneValid.formErrors,
     });
-    // this.setState({
-    //   formErrors: isBirthDateValid.formErrors,
-    // });
+    this.setState({
+      formErrors: isBirthDateValid.formErrors,
+    });
     this.setState({
       formErrors: isCheckboxValid.formErrors,
     });
@@ -125,16 +126,23 @@ export class UserScreenPage extends React.Component<{}, UserScreenState> {
     const phoneValid = this.state.phoneValid;
     const birthDateValid = this.state.birthDateValid;
     const checkboxValid = this.state.checkboxValid;
-    console.log("OI")
-    if (emailValid && phoneValid && birthDateValid && checkboxValid && passwordValid) {
-      console.log("OI2")
-      if(this.state.roleAdmin == true){
-        this.setState({role:"admin"})
-      }else{
-        this.setState({role:"user"})
-      }
+    if (
+      emailValid &&
+      phoneValid &&
+      birthDateValid &&
+      checkboxValid &&
+      passwordValid
+    ) {
       try {
-        await mutateCreatUser(this.state.name, this.state.email, this.state.phone, this.state.birthDate, this.state.password, this.state.role);
+        await mutateCreatUser(
+          this.state.name,
+          this.state.email,
+          this.state.phone,
+          this.state.birthDateString,
+          this.state.password,
+          this.state.roleAdmin,
+          this.state.roleUser
+        );
       } catch (error) {
         const message =
           error.graphQLErrors?.[0]?.message || "Não foi possível criar";
@@ -151,7 +159,12 @@ export class UserScreenPage extends React.Component<{}, UserScreenState> {
     this.setState({ roleAdmin: !this.state.roleAdmin });
   }
 
-  private handlebirthDate() {}
+  private handlebirthDate(event) {
+    const dateString = event.target.value;
+    this.setState({
+      birthDateString: dateString,
+    });
+  }
 
   render() {
     return (
