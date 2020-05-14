@@ -3,6 +3,7 @@ import "./UserScreenPage.css";
 import { FormErrors } from "./FormsErrors";
 import * as Validation from "../Validation";
 import { mutateCreatUser } from "../CreateUserIntegration";
+import { changeURL } from "../ChangeUrl";
 
 interface UserScreenState {
   name: string;
@@ -143,6 +144,7 @@ export class UserScreenPage extends React.Component<{}, UserScreenState> {
           this.state.roleAdmin,
           this.state.roleUser
         );
+        changeURL("/userList");
       } catch (error) {
         const message =
           error.graphQLErrors?.[0]?.message || "Não foi possível criar";
