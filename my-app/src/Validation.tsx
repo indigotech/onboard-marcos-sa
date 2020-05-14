@@ -20,8 +20,8 @@ export function validatePassword(value, fieldValidationErrors, passwordValid ) {
       }
 
 export function validatePhone(value, fieldValidationErrors, phoneValid){
-    phoneValid = value.match(/^\([1-9]{2}\) (?:[2-8]|9[1-9])[0-9]{3}\-[0-9]{4}$/);
-    fieldValidationErrors.password = phoneValid
+    phoneValid = value.match(/^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})\-?(\d{4}))$/);
+    fieldValidationErrors.phoneValid = phoneValid
       ? ""
       : "Telefone necessita do formato (xx) xxxxx-xxxx";
       var phoneValidate = {

@@ -5,27 +5,7 @@
   width: 30%;
 }
 
-.nameInput{
-    border: 0px;
-    width: 80%;
-    background-color: transparent;
-    color: white;
-}
-.emailInput{
-    border: 0px;
-    width: 80%;
-    background-color: transparent;
-    color: white;
-}
-
-.bithdateInput{
-    border: 0px;
-    width: 80%;
-    background-color: transparent;
-    color: white;
-}
-
-.telInput{
+.Input{
     border: 0px;
     width: 80%;
     background-color: transparent;

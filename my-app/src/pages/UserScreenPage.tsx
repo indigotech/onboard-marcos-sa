@@ -8,10 +8,12 @@ interface UserScreenState{
     phone:string;
     birthDate:Date;
     email:string;
+    password:string;
     roleAdmin:boolean;
     roleUser:boolean;
-    formErrors: { email: string;phone: string; birthDate:Date; checkbox:boolean};
+    formErrors: { email: string;phone: string; password:string; birthDate:Date; checkbox:boolean};
     emailValid: boolean;
+    passwordValid: boolean;
     phoneValid: boolean;
     birthDateValid:boolean;
     checkboxValid: boolean;
@@ -30,10 +32,12 @@ export class UserScreenPage extends React.Component<{},UserScreenState>{
         phone:"",
         birthDate:new Date(),
         email:"",
+        password:"",
         roleAdmin:false,
         roleUser:false,
-        formErrors: { email: "", phone: "", birthDate:new Date(""),checkbox:false},
+        formErrors: { email: "", phone: "",password:"", birthDate:new Date(""),checkbox:false},
         emailValid: false,
+        passwordValid: false,
         phoneValid: false,
         birthDateValid:false,
         checkboxValid: false
@@ -49,29 +53,35 @@ export class UserScreenPage extends React.Component<{},UserScreenState>{
   private handleButtonClick = () => {
     const email = this.state.email;
     const phone = this.state.phone;
+    const password = this.state.password;
     const birthDate = this.state.birthDate;
     const roleAdmin = this.state.roleAdmin;
     const roleUser = this.state.roleUser;
 
     const isEmailValid = Validation.validateEmail(email, this.state.formErrors, this.state.emailValid);
-    const isPhone = Validation.validatePhone(phone, this.state.formErrors, this.state.phoneValid);
-    const isBirthDate = Validation.validateBirthDate(birthDate, this.state.formErrors, this.state.birthDateValid);
-    const isCheckbox = Validation.validateCheckbox(roleUser, roleAdmin ,this.state.formErrors, this.state.checkboxValid);
+    const isPhoneValid = Validation.validatePhone(phone, this.state.formErrors, this.state.phoneValid);
+    const isPasswordValid = Validation.validatePassword(password, this.state.formErrors, this.state.passwordValid)
+    const isBirthDateValid = Validation.validateBirthDate(birthDate, this.state.formErrors, this.state.birthDateValid);
+    const isCheckboxValid = Validation.validateCheckbox(roleUser, roleAdmin ,this.state.formErrors, this.state.checkboxValid);
     this.setState({
       formErrors: isEmailValid.formErrors,
       emailValid: isEmailValid.emailValid,
-      phoneValid: isPhone.phoneValid,
-      birthDateValid: isBirthDate.birthDateValid,
-      checkboxValid: isCheckbox.checkboxValid
+      passwordValid: isPasswordValid.passwordValid,
+      phoneValid: isPhoneValid.phoneValid,
+      birthDateValid: isBirthDateValid.birthDateValid,
+      checkboxValid: isCheckboxValid.checkboxValid
     });
     this.setState({
-      formErrors: isPhone.formErrors
+      formErrors: isPhoneValid.formErrors
     });
     this.setState({
-      formErrors: isBirthDate.formErrors
+      formErrors: isBirthDateValid.formErrors
     });
     this.setState({
-      formErrors: isCheckbox.formErrors
+      formErrors: isCheckboxValid.formErrors
+    });
+    this.setState({
+      formErrors: isPasswordValid.formErrors
     });
     this.willCreate();
   };
@@ -80,7 +90,8 @@ export class UserScreenPage extends React.Component<{},UserScreenState>{
     const emailValid = this.state.emailValid;
     const phoneValid = this.state.phoneValid;
     const birthDateValid = this.state.birthDateValid;
-    if (emailValid && phoneValid && birthDateValid){
+    const checkboxValid = this.state.checkboxValid;
+    if (emailValid && phoneValid && birthDateValid && checkboxValid){
       console.log("OI")
     }
   }
@@ -91,6 +102,10 @@ export class UserScreenPage extends React.Component<{},UserScreenState>{
   
   private toggleCheckboxAdmin()  {
     this.setState({roleAdmin: !this.state.roleAdmin});
+  }
+
+  private handlebirthDate() {
+
   }
 
   render() {
@@ -108,7 +123,7 @@ export class UserScreenPage extends React.Component<{},UserScreenState>{
                 <input
                     type="name"
                     name="name"
-                    className="nameInput"
+                    className="Input"
                     value={this.state.name}
                     onChange={this.handleUserInput}
                 ></input>
@@ -120,8 +135,20 @@ export class UserScreenPage extends React.Component<{},UserScreenState>{
                 <input
                     type="email"
                     name="email"
-                    className="emailInput"
+                    className="Input"
                     value={this.state.email}
+                    onChange={this.handleUserInput}
+                ></input>
+              </div>
+              <div className="formsChild">
+                <div className="span">
+                    <label htmlFor="password">Senha</label>
+                </div>
+                <input
+                    type="password"
+                    name="password"
+                    className="Input"
+                    value={this.state.password}
                     onChange={this.handleUserInput}
                 ></input>
               </div>
@@ -132,8 +159,8 @@ export class UserScreenPage extends React.Component<{},UserScreenState>{
                 <input
                     type="date"
                     name="birthdate"
-                    className="bithdateInput"
-                    onChange={this.handleUserInput}
+                    className="Input"
+                    onChange={this.handlebirthDate}
                 ></input>
               </div>
               <div className="formsChild">
@@ -141,7 +168,7 @@ export class UserScreenPage extends React.Component<{},UserScreenState>{
                     <label htmlFor="phone">Celular</label>
                 </div>
                 <input
-                    type="tel" id="phone" name="phone" pattern="[0-9]{2}-[0-9]{5}-[0-9]{4}"  className="telInput" 
+                    type="tel" id="phone" name="phone" pattern="[0-9]{2}[0-9]{5}[0-9]{4}"  className="Input" 
                     value={this.state.phone}
                     onChange={this.handleUserInput}
                 ></input>
