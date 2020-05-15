@@ -6,22 +6,10 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 
 const CREATEUSER_MUTATION = gql`
   mutation CreateUserMutation(
-    $name: String!
-    $email: String!
-    $phone: String!
-    $birthDate: Date!
-    $password: String!
-    $role: UserRole!
+    $data: UserInputType!
   ) {
     createUser(
-      data: {
-        name: $name
-        email: $email
-        phone: $phone
-        birthDate: $birthDate
-        password: $password
-        role: $role
-      }
+      data:$data
     ) {
       id
     }
@@ -48,40 +36,22 @@ interface createUser {
   };
 }
 
+interface UserInputType {
+  name:string,
+  email:string,
+  phone:string,
+  birthDate:string,
+  password:string,
+  role:string
+}
+
 export async function mutateCreatUser(
-  name,
-  email,
-  phone,
-  birthDate,
-  password,
-  roleAdmin,
-  roleUser
+  data:UserInputType
 ) {
-  if (roleAdmin == true) {
-    const result = await client.mutate<createUser>({
+  return await client.mutate<createUser>({
       variables: {
-        name: name,
-        email: email,
-        phone: phone,
-        birthDate: birthDate,
-        password: password,
-        role: "admin",
+        data
       },
       mutation: CREATEUSER_MUTATION,
     });
-    return result;
-  } else {
-    const result = await client.mutate<createUser>({
-      variables: {
-        name: name,
-        email: email,
-        phone: phone,
-        birthDate: birthDate,
-        password: password,
-        role: "user",
-      },
-      mutation: CREATEUSER_MUTATION,
-    });
-    return result;
-  }
 }

@@ -111,7 +111,7 @@ export class UserListPage extends React.Component<{}, UserModelState> {
   }
 
   private handleButtonClick() {
-    changeURL("userScreen");
+    changeURL("createUser");
   }
 
   render() {

@@ -1,11 +1,11 @@
 import * as React from "react";
-import "./UserScreenPage.css";
+import "./CreateUserPage.css";
 import { FormErrors } from "./FormsErrors";
 import * as Validation from "../Validation";
 import { mutateCreatUser } from "../CreateUserIntegration";
 import { changeURL } from "../ChangeUrl";
 
-interface UserScreenState {
+interface CreateState {
   name: string;
   phone: string;
   birthDate: Date;
@@ -19,21 +19,16 @@ interface UserScreenState {
     phone: string;
     password: string;
     birthDate: string;
-    checkbox: string;
   };
   emailValid: boolean;
   passwordValid: boolean;
   phoneValid: boolean;
   birthDateValid: boolean;
-  checkboxValid: boolean;
 }
 
-export class UserScreenPage extends React.Component<{}, UserScreenState> {
+export class CreateUserPage extends React.Component<{}, CreateState> {
   constructor(props) {
     super(props);
-    this.toggleCheckboxAdmin = this.toggleCheckboxAdmin.bind(this);
-    this.toggleCheckboxUser = this.toggleCheckboxUser.bind(this);
-    this.handlebirthDate = this.handlebirthDate.bind(this);
     this.state = {
       name: "",
       phone: "",
@@ -47,14 +42,12 @@ export class UserScreenPage extends React.Component<{}, UserScreenState> {
         email: "",
         phone: "",
         password: "",
-        birthDate: "",
-        checkbox: "",
+        birthDate: ""
       },
       emailValid: false,
       passwordValid: false,
       phoneValid: false,
-      birthDateValid: false,
-      checkboxValid: false,
+      birthDateValid: false
     };
   }
 
@@ -69,8 +62,6 @@ export class UserScreenPage extends React.Component<{}, UserScreenState> {
     const phone = this.state.phone;
     const password = this.state.password;
     const birthDate = this.state.birthDateString;
-    const roleAdmin = this.state.roleAdmin;
-    const roleUser = this.state.roleUser;
 
     const isEmailValid = Validation.validateEmail(
       email,
@@ -92,19 +83,12 @@ export class UserScreenPage extends React.Component<{}, UserScreenState> {
       this.state.formErrors,
       this.state.birthDateValid
     );
-    const isCheckboxValid = Validation.validateCheckbox(
-      roleUser,
-      roleAdmin,
-      this.state.formErrors,
-      this.state.checkboxValid
-    );
     this.setState({
       formErrors: isEmailValid.formErrors,
       emailValid: isEmailValid.emailValid,
       passwordValid: isPasswordValid.passwordValid,
       phoneValid: isPhoneValid.phoneValid,
-      birthDateValid: isBirthDateValid.birthDateValid,
-      checkboxValid: isCheckboxValid.checkboxValid,
+      birthDateValid: isBirthDateValid.birthDateValid
     });
     this.setState({
       formErrors: isPhoneValid.formErrors,
@@ -113,36 +97,35 @@ export class UserScreenPage extends React.Component<{}, UserScreenState> {
       formErrors: isBirthDateValid.formErrors,
     });
     this.setState({
-      formErrors: isCheckboxValid.formErrors,
-    });
-    this.setState({
       formErrors: isPasswordValid.formErrors,
     });
     this.willCreate();
   };
 
   private async willCreate() {
+    
+    var data = {
+      name:this.state.name,
+      email:this.state.email,
+      phone:this.state.phone,
+      birthDate:this.state.birthDateString,
+      password:this.state.password,
+      role: this.state.roleAdmin ? 'admin' : 'user'
+    }
+
     const emailValid = this.state.emailValid;
     const passwordValid = this.state.passwordValid;
     const phoneValid = this.state.phoneValid;
     const birthDateValid = this.state.birthDateValid;
-    const checkboxValid = this.state.checkboxValid;
     if (
       emailValid &&
       phoneValid &&
       birthDateValid &&
-      checkboxValid &&
       passwordValid
     ) {
       try {
         await mutateCreatUser(
-          this.state.name,
-          this.state.email,
-          this.state.phone,
-          this.state.birthDateString,
-          this.state.password,
-          this.state.roleAdmin,
-          this.state.roleUser
+          data
         );
         changeURL("/userList");
       } catch (error) {
@@ -153,15 +136,15 @@ export class UserScreenPage extends React.Component<{}, UserScreenState> {
     }
   }
 
-  private toggleCheckboxUser() {
+  private toggleRadioUser = () => {
     this.setState({ roleUser: !this.state.roleUser });
   }
 
-  private toggleCheckboxAdmin() {
+  private toggleRadioAdmin = () => {
     this.setState({ roleAdmin: !this.state.roleAdmin });
   }
 
-  private handlebirthDate(event) {
+  private handlebirthDate= (event) => {
     const dateString = event.target.value;
     this.setState({
       birthDateString: dateString,
@@ -241,17 +224,17 @@ export class UserScreenPage extends React.Component<{}, UserScreenState> {
               <label htmlFor="role">Papel</label>
             </div>
             <input
-              type="checkbox"
-              name="roleUser"
+              type="radio"
+              name="role"
               className="roleInput"
-              onChange={this.toggleCheckboxUser}
+              onChange={this.toggleRadioUser}
             ></input>
             <p className="labelRole">User</p>
             <input
-              type="checkbox"
-              name="roleAdmin"
+              type="radio"
+              name="role"
               className="roleInput"
-              onChange={this.toggleCheckboxAdmin}
+              onChange={this.toggleRadioAdmin}
             ></input>
             <p className="labelRole">Admin</p>
           </div>

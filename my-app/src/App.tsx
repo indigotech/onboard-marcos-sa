@@ -2,7 +2,7 @@ import * as React from "react";
 import "./App.css";
 import { LoginPage } from "./pages/LoginPage";
 import { UserListPage } from "./pages/UserListPage";
-import { UserScreenPage } from "./pages/UserScreenPage";
+import { CreateUserPage } from "./pages/CreateUserPage";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { UserDetailPage } from "./pages/UserDetailPage";
 
@@ -13,12 +13,15 @@ function App() {
         <Route exact path="/">
           <LoginPage />
         </Route>
-        <Router exact path="/userList">
+        <Route exact path="/userList">
           <UserListPage />
-        </Router>
-        <Router path="/userDetail">
+        </Route>
+        <Route path="/userDetail">
           <UserDetailPage />
-        </Router>
+        </Route>
+        <Route exact path="/createUser">
+          <CreateUserPage />
+        </Route>
       </Switch>
     </Router>
   );

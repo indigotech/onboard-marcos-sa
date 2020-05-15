@@ -52,24 +52,3 @@ export function validateBirthDate(
   return birthdateValidate;
 }
 
-export function validateCheckbox(
-  roleUser,
-  roleAdmin,
-  fieldValidationErrors,
-  checkboxValid
-) {
-  if ((roleUser && roleAdmin) || (roleUser === false && roleAdmin === false)) {
-    checkboxValid = false;
-  } else {
-    checkboxValid = true;
-  }
-
-  fieldValidationErrors.checkbox = checkboxValid
-    ? ""
-    : "Selecione apenas 1 checkbox";
-  var checkboxValidate = {
-    formErrors: fieldValidationErrors,
-    checkboxValid: checkboxValid,
-  };
-  return checkboxValidate;
-}
