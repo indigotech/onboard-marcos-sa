@@ -14,6 +14,7 @@ interface UserModelState {
   limit: number;
   hasNextPage: boolean;
   isLoading: boolean;
+  id:number;
 }
 
 function loaderComponent () {
@@ -41,6 +42,7 @@ export class UserListPage extends React.Component<{}, UserModelState> {
       limit: 10,
       hasNextPage: true,
       isLoading: false,
+      id:0
     };
   }
 
@@ -64,10 +66,22 @@ export class UserListPage extends React.Component<{}, UserModelState> {
     this.getUserList();
   }
 
+  private HandleUserDetailButton(id){
+    this.setState({
+      id:id
+    })
+    return id
+  }
+
+  const getID = () => {
+    return this.state.id;
+  };
+  exports.getid = this.getID;
+
   private handleUserCard({ id, name, email }) {
     return (
       <div className="card" key={id}>
-        <div className="container">
+        <div className="container" onClick={this.HandleUserDetailButton(id)}>
           <p>Nome: {name} </p>
           <p> E-mail: {email} </p>
         </div>

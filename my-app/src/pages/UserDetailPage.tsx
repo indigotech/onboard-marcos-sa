@@ -1,6 +1,7 @@
 import React from "react";
 import "./UserDetailPage.css";
 import {queryUserDetail} from "../UserDetailQuery";
+import {UserListPage}from "./UserListPage";
 
 interface userRole{
     admin:boolean;
@@ -8,7 +9,7 @@ interface userRole{
 }
 
 interface UserDetail{   
-    id:String;
+    id:number;
     name:string;
     phone:string;
     birthDate:Date;
@@ -23,7 +24,7 @@ export class UserDetailPage extends React.Component<{},UserDetail>{
     constructor(props){
         super(props);
         this.state = {
-            id:"41",
+            id:0,
             name:"",
             phone:"",
             birthDate:new Date(),
@@ -32,6 +33,12 @@ export class UserDetailPage extends React.Component<{},UserDetail>{
             role:{admin:false, user:false},
             roleString:""
         }
+    }
+
+    private setID (){
+        this.setState({
+            id:UserListPage.returnID()
+        })
     }
 
     private async getUserDetail() {
@@ -63,6 +70,7 @@ export class UserDetailPage extends React.Component<{},UserDetail>{
 
       componentDidMount() {
         this.getUserDetail();
+        this.setID();
       }
 
     render(){
