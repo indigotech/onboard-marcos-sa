@@ -8,8 +8,6 @@ interface LoginPageState {
   email: string;
   password: string;
   formErrors: { email: string; password: string };
-  emailValid: boolean;
-  passwordValid: boolean;
 }
 
 export class LoginPage extends React.Component<{}, LoginPageState> {
@@ -18,9 +16,7 @@ export class LoginPage extends React.Component<{}, LoginPageState> {
     this.state = {
       email: "",
       password: "",
-      formErrors: { email: "", password: "" },
-      emailValid: false,
-      passwordValid: false,
+      formErrors: { email: "", password: "" }
     };
   }
 
@@ -36,27 +32,23 @@ export class LoginPage extends React.Component<{}, LoginPageState> {
 
     const isEmailValid = Validation.validateEmail(
       email,
-      this.state.formErrors,
-      this.state.emailValid
+      this.state.formErrors
     );
     const isPasswordValid = Validation.validatePassword(
       password,
-      this.state.formErrors,
-      this.state.passwordValid
+      this.state.formErrors
     );
     this.setState({
-      formErrors: isEmailValid.formErrors,
-      emailValid: isEmailValid.emailValid,
-      passwordValid: isPasswordValid.passwordValid,
+      formErrors: isEmailValid.formErrors
     });
     this.setState({
-      formErrors: isPasswordValid.formErrors,
+      formErrors: isPasswordValid.formErrors
     });
     this.willLogin();
   };
 
   private async willLogin() {
-    if (this.state.emailValid && this.state.passwordValid) {
+    if (this.state.formErrors.email.match("") && this.state.formErrors.password.match("")) {
       try {
         await Authentication.login(this.state.email, this.state.password);
       } catch (error) {

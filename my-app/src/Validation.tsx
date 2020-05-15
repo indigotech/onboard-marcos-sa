@@ -1,44 +1,41 @@
-export function validateEmail(value, fieldValidationErrors, emailValid) {
-  emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+export function validateEmail(value, fieldValidationErrors) {
+  const emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
   fieldValidationErrors.email = emailValid ? "" : "Email não é válido";
   var emailValidate = {
-    formErrors: fieldValidationErrors,
-    emailValid: emailValid,
+    formErrors: fieldValidationErrors
   };
   return emailValidate;
 }
 
-export function validatePassword(value, fieldValidationErrors, passwordValid) {
-  passwordValid = value.length >= 7 && value.match(/^(?=.*[a-z])(?=.*[0-9])/);
+export function validatePassword(value, fieldValidationErrors) {
+  const passwordValid = value.length >= 7 && value.match(/^(?=.*[a-z])(?=.*[0-9])/);
   fieldValidationErrors.password = passwordValid
     ? ""
     : "Senha necessita de, pelo menos, um número e uma letra";
   var passwordValidate = {
-    formErrors: fieldValidationErrors,
-    passwordValid: passwordValid,
+    formErrors: fieldValidationErrors
   };
   return passwordValidate;
 }
 
-export function validatePhone(value, fieldValidationErrors, phoneValid) {
-  phoneValid = value.match(/^\d{11}$/);
+export function validatePhone(value, fieldValidationErrors) {
+  const phoneValid = value.match(/^\d{11}$/);
   fieldValidationErrors.phoneValid = phoneValid
     ? ""
     : "Colocar apenas números no telefone";
   var phoneValidate = {
-    formErrors: fieldValidationErrors,
-    phoneValid: phoneValid,
+    formErrors: fieldValidationErrors
   };
   return phoneValidate;
 }
 
 export function validateBirthDate(
   value,
-  fieldValidationErrors,
-  birthDateValid
+  fieldValidationErrors
 ) {
   const now = new Date();
   const birth = new Date(value);
+  let birthDateValid = false
   if (birth.getTime() < now.getTime()) {
     birthDateValid = true;
   } else {
@@ -46,8 +43,7 @@ export function validateBirthDate(
   }
   fieldValidationErrors.birthDate = birthDateValid ? "" : "Data incorreta!";
   var birthdateValidate = {
-    formErrors: fieldValidationErrors,
-    birthDateValid: birthDateValid,
+    formErrors: fieldValidationErrors
   };
   return birthdateValidate;
 }

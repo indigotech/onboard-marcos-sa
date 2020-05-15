@@ -6,12 +6,6 @@ import { mutateCreatUser } from "../CreateUserIntegration";
 import { changeURL } from "../ChangeUrl";
 
 interface CreateState {
-  name: string;
-  phone: string;
-  birthDate: Date;
-  birthDateString: string;
-  email: string;
-  password: string;
   roleAdmin: boolean;
   roleUser: boolean;
   formErrors: {
@@ -20,22 +14,12 @@ interface CreateState {
     password: string;
     birthDate: string;
   };
-  emailValid: boolean;
-  passwordValid: boolean;
-  phoneValid: boolean;
-  birthDateValid: boolean;
 }
 
 export class CreateUserPage extends React.Component<{}, CreateState> {
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
-      phone: "",
-      birthDate: new Date(),
-      birthDateString: "",
-      email: "",
-      password: "",
       roleAdmin: false,
       roleUser: false,
       formErrors: {
@@ -43,80 +27,65 @@ export class CreateUserPage extends React.Component<{}, CreateState> {
         phone: "",
         password: "",
         birthDate: ""
-      },
-      emailValid: false,
-      passwordValid: false,
-      phoneValid: false,
-      birthDateValid: false
+      }
     };
   }
 
-  private handleUserInput = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    this.setState({ [name]: value } as any);
-  };
-
-  private handleButtonClick = () => {
-    const email = this.state.email;
-    const phone = this.state.phone;
-    const password = this.state.password;
-    const birthDate = this.state.birthDateString;
+  private handleButtonClick = (event) => {
+    event.preventDefault();
+    const name = event.target.name.value
+    const email = event.target.email.value
+    const phone = event.target.phone.value
+    const password = event.target.password.value
+    const birthDate = event.target.birthDate.value
 
     const isEmailValid = Validation.validateEmail(
       email,
-      this.state.formErrors,
-      this.state.emailValid
+      this.state.formErrors
     );
     const isPhoneValid = Validation.validatePhone(
       phone,
-      this.state.formErrors,
-      this.state.phoneValid
+      this.state.formErrors
     );
     const isPasswordValid = Validation.validatePassword(
       password,
-      this.state.formErrors,
-      this.state.passwordValid
+      this.state.formErrors
     );
     const isBirthDateValid = Validation.validateBirthDate(
       birthDate,
-      this.state.formErrors,
-      this.state.birthDateValid
+      this.state.formErrors
     );
     this.setState({
-      formErrors: isEmailValid.formErrors,
-      emailValid: isEmailValid.emailValid,
-      passwordValid: isPasswordValid.passwordValid,
-      phoneValid: isPhoneValid.phoneValid,
-      birthDateValid: isBirthDateValid.birthDateValid
+      formErrors: isEmailValid.formErrors
     });
     this.setState({
-      formErrors: isPhoneValid.formErrors,
+      formErrors: isPhoneValid.formErrors
     });
     this.setState({
-      formErrors: isBirthDateValid.formErrors,
+      formErrors: isBirthDateValid.formErrors
     });
     this.setState({
-      formErrors: isPasswordValid.formErrors,
+      formErrors: isPasswordValid.formErrors
     });
-    this.willCreate();
-  };
+    this.willCreate(name, email, phone, birthDate, password);
+   };
 
-  private async willCreate() {
-    
+  private async willCreate(name, email, phone, bithDate, password) {
+    const stringDate = bithDate.toString()
+    const roleAdmin = this.state.roleAdmin
     var data = {
-      name:this.state.name,
-      email:this.state.email,
-      phone:this.state.phone,
-      birthDate:this.state.birthDateString,
-      password:this.state.password,
-      role: this.state.roleAdmin ? 'admin' : 'user'
+      name:name,
+      email:email,
+      phone:phone,
+      birthDate:stringDate,
+      password:password,
+      role: roleAdmin ? 'admin' : 'user'
     }
 
-    const emailValid = this.state.emailValid;
-    const passwordValid = this.state.passwordValid;
-    const phoneValid = this.state.phoneValid;
-    const birthDateValid = this.state.birthDateValid;
+    const emailValid = this.state.formErrors.email.match("");
+    const passwordValid = this.state.formErrors.password.match("");
+    const phoneValid = this.state.formErrors.phone.match("");
+    const birthDateValid = this.state.formErrors.birthDate.match("");
     if (
       emailValid &&
       phoneValid &&
@@ -144,18 +113,13 @@ export class CreateUserPage extends React.Component<{}, CreateState> {
     this.setState({ roleAdmin: !this.state.roleAdmin });
   }
 
-  private handlebirthDate= (event) => {
-    const dateString = event.target.value;
-    this.setState({
-      birthDateString: dateString,
-    });
-  }
-
   render() {
     return (
       <div>
         <h1 className="h1NewUser">Crie um novo usuario!</h1>
-        <form className="formsBig">
+        <form className="formsBig"
+        onSubmit={this.handleButtonClick}
+        >
           <div className="panel panel-default">
             <FormErrors formErrors={this.state.formErrors} />
           </div>
@@ -167,8 +131,6 @@ export class CreateUserPage extends React.Component<{}, CreateState> {
               type="name"
               name="name"
               className="Input"
-              value={this.state.name}
-              onChange={this.handleUserInput}
             ></input>
           </div>
           <div className="formsChild">
@@ -179,8 +141,6 @@ export class CreateUserPage extends React.Component<{}, CreateState> {
               type="email"
               name="email"
               className="Input"
-              value={this.state.email}
-              onChange={this.handleUserInput}
             ></input>
           </div>
           <div className="formsChild">
@@ -191,8 +151,6 @@ export class CreateUserPage extends React.Component<{}, CreateState> {
               type="password"
               name="password"
               className="Input"
-              value={this.state.password}
-              onChange={this.handleUserInput}
             ></input>
           </div>
           <div className="formsChild">
@@ -201,9 +159,8 @@ export class CreateUserPage extends React.Component<{}, CreateState> {
             </div>
             <input
               type="date"
-              name="birthdate"
+              name="birthDate"
               className="Input"
-              onChange={this.handlebirthDate}
             ></input>
           </div>
           <div className="formsChild">
@@ -212,11 +169,8 @@ export class CreateUserPage extends React.Component<{}, CreateState> {
             </div>
             <input
               type="tel"
-              id="phone"
               name="phone"
               className="Input"
-              value={this.state.phone}
-              onChange={this.handleUserInput}
             ></input>
           </div>
           <div className="formsChildRole">
@@ -239,13 +193,12 @@ export class CreateUserPage extends React.Component<{}, CreateState> {
             <p className="labelRole">Admin</p>
           </div>
           <button
-            type="button"
+            type="submit"
             className="loginbt"
-            onClick={this.handleButtonClick}
           >
             Criar usuário
           </button>
-        </form>
+        </form >
       </div>
     );
   }
