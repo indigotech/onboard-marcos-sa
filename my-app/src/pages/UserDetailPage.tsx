@@ -1,7 +1,6 @@
 import React from "react";
 import "./UserDetailPage.css";
 import {queryUserDetail} from "../UserDetailQuery";
-import {UserListPage}from "./UserListPage";
 
 interface userRole{
     admin:boolean;
@@ -9,7 +8,6 @@ interface userRole{
 }
 
 interface UserDetail{   
-    id:number;
     name:string;
     phone:string;
     birthDate:Date;
@@ -24,7 +22,6 @@ export class UserDetailPage extends React.Component<{},UserDetail>{
     constructor(props){
         super(props);
         this.state = {
-            id:0,
             name:"",
             phone:"",
             birthDate:new Date(),
@@ -35,16 +32,13 @@ export class UserDetailPage extends React.Component<{},UserDetail>{
         }
     }
 
-    private setID (){
-        this.setState({
-            id:UserListPage.returnID()
-        })
-    }
-
     private async getUserDetail() {
-        try {
+
+      try {
+          const splitedUrl = window.location.pathname.split('/')
+          const id = splitedUrl[splitedUrl.length - 1]
           const userDetail = await queryUserDetail(
-            this.state.id
+            id
           );
           
           this.setState({
@@ -56,11 +50,6 @@ export class UserDetailPage extends React.Component<{},UserDetail>{
             birthDateString:userDetail.data.user.birthDate.toLocaleString(),
             roleString:JSON.stringify(userDetail.data.user.role)
           });
-
-          console.log(this.state.birthDate)
-          
-          console.log(this.state.birthDateString)
-          console.log(this.state.role)
         } catch (error) {
           const message = error.graphQLErrors?.[0]?.message || "Falha na conexão";
           alert(message);
@@ -70,7 +59,6 @@ export class UserDetailPage extends React.Component<{},UserDetail>{
 
       componentDidMount() {
         this.getUserDetail();
-        this.setID();
       }
 
     render(){

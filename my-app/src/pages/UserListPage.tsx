@@ -2,6 +2,7 @@ import React from "react";
 import "./UserListPage.css";
 import * as UserListIntegration from "../UserListIntegration";
 import InfiniteScroll from "react-infinite-scroller";
+import { createBrowserHistory } from "history";
 
 interface UserModelState {
   users: {
@@ -14,7 +15,6 @@ interface UserModelState {
   limit: number;
   hasNextPage: boolean;
   isLoading: boolean;
-  id:number;
 }
 
 function loaderComponent () {
@@ -41,8 +41,7 @@ export class UserListPage extends React.Component<{}, UserModelState> {
       offset: 0,
       limit: 10,
       hasNextPage: true,
-      isLoading: false,
-      id:0
+      isLoading: false
     };
   }
 
@@ -66,22 +65,21 @@ export class UserListPage extends React.Component<{}, UserModelState> {
     this.getUserList();
   }
 
-  private HandleUserDetailButton(id){
-    this.setState({
-      id:id
-    })
-    return id
+  private changeURL(id) {
+    const history = createBrowserHistory();
+      history.push("/userDetail/" + id);
+      window.location.reload(false);
+    
   }
 
-  const getID = () => {
-    return this.state.id;
-  };
-  exports.getid = this.getID;
+  private HandleUserDetailButton = (event) => {
+    this.changeURL(event.target.id);
+  }
 
-  private handleUserCard({ id, name, email }) {
+  private handleUserCard = ({ id, name, email }) => {
     return (
-      <div className="card" key={id}>
-        <div className="container" onClick={this.HandleUserDetailButton(id)}>
+      <div className="card">
+        <div className="container" id={id} key={id} onClick={this.HandleUserDetailButton}>
           <p>Nome: {name} </p>
           <p> E-mail: {email} </p>
         </div>

@@ -3,7 +3,6 @@ import gql from "graphql-tag";
 import { ApolloClient } from "apollo-client";
 import { createHttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
-import { UserModel } from "./Users.model";
 
 const USERDETAIL_QUERY = gql`
   query QueryUser($id: ID!) {
