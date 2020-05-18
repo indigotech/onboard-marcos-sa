@@ -3,6 +3,7 @@ import "./App.css";
 import { LoginPage } from "./pages/LoginPage";
 import { UserListPage } from "./pages/UserListPage";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { UserDetailPage } from "./pages/UserDetailPage";
 
 function App() {
   return (
@@ -13,6 +14,9 @@ function App() {
         </Route>
         <Router exact path="/userList">
           <UserListPage />
+        </Router>
+        <Router path="/userDetail">
+          <UserDetailPage />
         </Router>
       </Switch>
     </Router>
