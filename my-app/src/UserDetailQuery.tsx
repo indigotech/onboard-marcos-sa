@@ -6,13 +6,13 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 
 const USERDETAIL_QUERY = gql`
   query QueryUser($id: ID!) {
-    user(id:$id) {
-        name
-        phone
-        birthDate	
-        email	
-        role
-      }
+    user(id: $id) {
+      name
+      phone
+      birthDate
+      email
+      role
+    }
   }
 `;
 
@@ -30,19 +30,19 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-interface userRole{
-    admin:boolean;
-    user:boolean;
+interface userRole {
+  admin: boolean;
+  user: boolean;
 }
 
-interface userDetail{
-    user:{
-        name:string;
-        phone:string;
-        birthDate:Date;
-        email:string;
-        role:userRole;
-    }
+interface userDetail {
+  user: {
+    name: string;
+    phone: string;
+    birthDate: Date;
+    email: string;
+    role: userRole;
+  };
 }
 
 export async function queryUserDetail(id) {

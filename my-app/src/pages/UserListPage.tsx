@@ -17,12 +17,12 @@ interface UserModelState {
   isLoading: boolean;
 }
 
-function loaderComponent () {
+function loaderComponent() {
   return (
     <h4
       style={{
-      textAlign: "center",
-      color: "white"
+        textAlign: "center",
+        color: "white",
       }}
     >
       Carregando...
@@ -41,7 +41,7 @@ export class UserListPage extends React.Component<{}, UserModelState> {
       offset: 0,
       limit: 10,
       hasNextPage: true,
-      isLoading: false
+      isLoading: false,
     };
   }
 
@@ -67,25 +67,29 @@ export class UserListPage extends React.Component<{}, UserModelState> {
 
   private changeURL(id) {
     const history = createBrowserHistory();
-      history.push("/userDetail/" + id);
-      window.location.reload(false);
-    
+    history.push("/userDetail/" + id);
+    window.location.reload(false);
   }
 
   private HandleUserDetailButton = (event) => {
     this.changeURL(event.target.id);
-  }
+  };
 
   private handleUserCard = ({ id, name, email }) => {
     return (
       <div className="card">
-        <div className="container" id={id} key={id} onClick={this.HandleUserDetailButton}>
+        <div
+          className="container"
+          id={id}
+          key={id}
+          onClick={this.HandleUserDetailButton}
+        >
           <p>Nome: {name} </p>
           <p> E-mail: {email} </p>
         </div>
       </div>
     );
-  }
+  };
   private async fetchMoreData() {
     try {
       this.setState({ limit: this.state.limit + 10 });

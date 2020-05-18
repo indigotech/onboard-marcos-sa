@@ -15,7 +15,7 @@ function App() {
         <Router exact path="/userList">
           <UserListPage />
         </Router>
-        <Router  path="/userDetail">
+        <Router path="/userDetail">
           <UserDetailPage />
         </Router>
       </Switch>
