@@ -16,20 +16,6 @@ const CREATEUSER_MUTATION = gql`
   }
 `;
 
-const token = localStorage.getItem(AUTH_TOKEN);
-
-const httpLink = createHttpLink({
-  uri: "https://tq-template-server-sample.herokuapp.com/graphql",
-  headers: {
-    Authorization: token,
-  },
-});
-
-const client = new ApolloClient({
-  link: httpLink,
-  cache: new InMemoryCache(),
-});
-
 interface createUser {
   createUser: {
     id: String;
@@ -45,10 +31,21 @@ interface UserInputType {
   role:string
 }
 
-export async function mutateCreatUser(
+export function mutateCreatUser(
   data:UserInputType
 ) {
-  return await client.mutate<createUser>({
+  const token = localStorage.getItem(AUTH_TOKEN);
+  const httpLink = createHttpLink({
+    uri: "https://tq-template-server-sample.herokuapp.com/graphql",
+    headers: {
+      Authorization: token,
+    },
+  });
+  const client = new ApolloClient({
+    link: httpLink,
+    cache: new InMemoryCache(),
+  });
+  return client.mutate<createUser>({
       variables: {
         data
       },

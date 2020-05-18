@@ -56,16 +56,7 @@ export class CreateUserPage extends React.Component<{}, CreateState> {
       this.state.formErrors
     );
     this.setState({
-      formErrors: isEmailValid.formErrors
-    });
-    this.setState({
-      formErrors: isPhoneValid.formErrors
-    });
-    this.setState({
-      formErrors: isBirthDateValid.formErrors
-    });
-    this.setState({
-      formErrors: isPasswordValid.formErrors
+      formErrors: isBirthDateValid.formErrors && isPasswordValid.formErrors && isPhoneValid.formErrors && isEmailValid.formErrors
     });
     this.willCreate(name, email, phone, birthDate, password);
    };
