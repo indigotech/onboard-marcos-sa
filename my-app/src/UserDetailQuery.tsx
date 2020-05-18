@@ -1,8 +1,5 @@
-import { AUTH_TOKEN } from "./constants";
 import gql from "graphql-tag";
-import { ApolloClient } from "apollo-client";
-import { createHttpLink } from "apollo-link-http";
-import { InMemoryCache } from "apollo-cache-inmemory";
+import { client } from "./CreateClient";
 
 const USERDETAIL_QUERY = gql`
   query QueryUser($id: ID!) {
@@ -15,20 +12,6 @@ const USERDETAIL_QUERY = gql`
     }
   }
 `;
-
-const token = localStorage.getItem(AUTH_TOKEN);
-
-const httpLink = createHttpLink({
-  uri: "https://tq-template-server-sample.herokuapp.com/graphql",
-  headers: {
-    Authorization: token,
-  },
-});
-
-const client = new ApolloClient({
-  link: httpLink,
-  cache: new InMemoryCache(),
-});
 
 export interface userRole {
   admin: boolean;
@@ -45,8 +28,8 @@ interface userDetail {
   };
 }
 
-export async function queryUserDetail(id) {
-  const result = await client.query<userDetail>({
+export function queryUserDetail(id) {
+  const result = client().query<userDetail>({
     variables: { id: id },
     query: USERDETAIL_QUERY,
   });

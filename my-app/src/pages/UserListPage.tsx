@@ -3,6 +3,9 @@ import "./UserListPage.css";
 import * as UserListIntegration from "../UserListIntegration";
 import InfiniteScroll from "react-infinite-scroller";
 import { createBrowserHistory } from "history";
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import { changeURL } from "../ChangeUrl";
 
 interface UserModelState {
   users: {
@@ -107,6 +110,10 @@ export class UserListPage extends React.Component<{}, UserModelState> {
     }
   }
 
+  private handleButtonClick() {
+    changeURL("createUser");
+  }
+
   render() {
     const { users } = this.state;
     return (
@@ -120,6 +127,17 @@ export class UserListPage extends React.Component<{}, UserModelState> {
         >
           {users.map(this.handleUserCard)}
         </InfiniteScroll>
+        <div className="fab-wrap">
+          <Fab
+            onClick={this.handleButtonClick}
+            size="medium"
+            color="primary"
+            aria-label="add"
+            className="fab"
+          >
+            <AddIcon />
+          </Fab>
+        </div>
       </div>
     );
   }
