@@ -30,7 +30,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-interface userRole {
+export interface userRole {
   admin: boolean;
   user: boolean;
 }
